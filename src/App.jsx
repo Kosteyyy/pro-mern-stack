@@ -19,47 +19,43 @@ class IssueFilter extends React.Component {
     }
 }
 
-class IssueTable extends React.Component {
-    render() {
-        const issueRows = this.props.issues.map(issue => 
-            <IssueRow key={issue.id} issue={issue}/>);
-        return (
-            <table className="bordered-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Owner</th>
-                        <th>Created</th>
-                        <th>Effort</th>
-                        <th>Due Date</th>
-                        <th>Title</th>
-                    </tr>
-                </thead>
-                <tbody>
-                   {issueRows}
-                </tbody>
-            </table>
-        );
-    }
+function IssueTable (props) {
+    const issueRows = props.issues.map(issue => 
+        <IssueRow key={issue.id} issue={issue}/>);
+    return (
+        <table className="bordered-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Owner</th>
+                    <th>Created</th>
+                    <th>Effort</th>
+                    <th>Due Date</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {issueRows}
+            </tbody>
+        </table>
+    );
 }
 
-class IssueRow extends React.Component {
-    render() {
-        const issue = this.props.issue;
-        console.log("Render IssueRow: " + issue.id);        
-        return (
-            <tr>
-                <td>{issue.id}</td>
-                <td>{issue.status}</td>
-                <td>{issue.owner}</td>
-                <td>{issue.created.toDateString()}</td>
-                <td>{issue.effort}</td>
-                <td>{issue.due ? issue.due.toDateString() : ''}</td>
-                <td>{issue.title}</td>
-            </tr>
-        );
-    }
+function IssueRow (props) {
+    const issue = props.issue;
+    console.log("Render IssueRow: " + issue.id);        
+    return (
+        <tr>
+            <td>{issue.id}</td>
+            <td>{issue.status}</td>
+            <td>{issue.owner}</td>
+            <td>{issue.created.toDateString()}</td>
+            <td>{issue.effort}</td>
+            <td>{issue.due ? issue.due.toDateString() : ''}</td>
+            <td>{issue.title}</td>
+        </tr>
+    );
 }
 
 
@@ -122,7 +118,7 @@ class IssueList extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Issue Tracker New1</h1>
+                <h1>Issue Tracker func</h1>
                 <IssueFilter />
                 <hr />
                 <IssueTable issues={this.state.issues} />
