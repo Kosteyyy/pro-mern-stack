@@ -22,7 +22,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var issues = [{
+var initialIssues = [{
   id: 1,
   status: 'New',
   owner: 'Ravan',
@@ -39,6 +39,11 @@ var issues = [{
   due: new Date('2018-08-30'),
   title: 'Missing bottom border on panel'
 }];
+var sampleIssue = {
+  status: 'New',
+  owner: 'Pieta',
+  title: 'Completion date should be optional'
+};
 
 var IssueFilter = /*#__PURE__*/function (_React$Component) {
   _inherits(IssueFilter, _React$Component);
@@ -67,21 +72,55 @@ var IssueTable = /*#__PURE__*/function (_React$Component2) {
   var _super2 = _createSuper(IssueTable);
 
   function IssueTable() {
+    var _this;
+
     _classCallCheck(this, IssueTable);
 
-    return _super2.apply(this, arguments);
+    _this = _super2.call(this);
+    _this.state = {
+      issues: []
+    };
+    setTimeout(function () {
+      _this.createIssue(sampleIssue);
+    }, 2000);
+    return _this;
   }
 
   _createClass(IssueTable, [{
+    key: "createIssue",
+    value: function createIssue(issue) {
+      /* let newIssue = issue; */
+      var newIssue = Object.assign({}, issue);
+      newIssue.id = this.state.issues.length + 1;
+      newIssue.created = new Date();
+      var newIssueList = this.state.issues.slice();
+      newIssueList.push(newIssue);
+      this.setState({
+        issues: newIssueList
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.loadData();
+    }
+  }, {
+    key: "loadData",
+    value: function loadData() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.setState({
+          issues: initialIssues
+        });
+      }, 500);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var rowStyle = {
-        border: "1px solid silver",
-        padding: 4
-      };
-      var issueRows = issues.map(function (issue) {
+      var issueRows = this.state.issues.map(function (issue) {
         return /*#__PURE__*/React.createElement(IssueRow, {
-          rowStyle: rowStyle,
+          key: issue.id,
           issue: issue
         });
       });
@@ -109,6 +148,7 @@ var IssueRow = /*#__PURE__*/function (_React$Component3) {
     key: "render",
     value: function render() {
       var issue = this.props.issue;
+      console.log("Render IssueRow: " + issue.id);
       return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, issue.id), /*#__PURE__*/React.createElement("td", null, issue.status), /*#__PURE__*/React.createElement("td", null, issue.owner), /*#__PURE__*/React.createElement("td", null, issue.created.toDateString()), /*#__PURE__*/React.createElement("td", null, issue.effort), /*#__PURE__*/React.createElement("td", null, issue.due ? issue.due.toDateString() : ''), /*#__PURE__*/React.createElement("td", null, issue.title));
     }
   }]);
@@ -151,7 +191,7 @@ var IssueList = /*#__PURE__*/function (_React$Component5) {
   _createClass(IssueList, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Issue Tracker"), /*#__PURE__*/React.createElement(IssueFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueTable, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueAdd, null));
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Issue Tracker Assign"), /*#__PURE__*/React.createElement(IssueFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueTable, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueAdd, null));
     }
   }]);
 

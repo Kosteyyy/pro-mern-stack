@@ -1,4 +1,4 @@
-const issues = [
+const initialIssues = [
     {
         id: 1, status: 'New', owner: 'Ravan', effort: 5,
         created: new Date('2018-08-05'), due: undefined, 
@@ -10,6 +10,10 @@ const issues = [
         title: 'Missing bottom border on panel',
     }
 ];
+const sampleIssue = {
+    status: 'New', owner: 'Pieta',
+    title: 'Completion date should be optional',
+    };
 
 class IssueFilter extends React.Component {
     render() {
@@ -20,10 +24,38 @@ class IssueFilter extends React.Component {
 }
 
 class IssueTable extends React.Component {
+    constructor() {
+        super();
+        this.state = {issues: []};
+        setTimeout(() => {
+            this.createIssue(sampleIssue);
+        }, 2000);
+
+    }
+    createIssue(issue) {
+        /* let newIssue = issue; */
+        let newIssue = Object.assign({}, issue);
+        newIssue.id = this.state.issues.length + 1;
+        newIssue.created = new Date();
+        const newIssueList = this.state.issues.slice();
+        newIssueList.push(newIssue);
+        this.setState({ issues: newIssueList });
+        }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    loadData() {
+        setTimeout(() => {
+            this.setState({ issues: initialIssues });
+        }, 500);
+    }
+    
 
     render() {
-        const rowStyle = {border: "1px solid silver", padding: 4};
-        const issueRows = issues.map(issue => <IssueRow rowStyle={rowStyle} issue={issue}/>);
+        const issueRows = this.state.issues.map(issue => 
+            <IssueRow key={issue.id} issue={issue}/>);
         return (
             <table className="bordered-table">
                 <thead>
@@ -47,7 +79,9 @@ class IssueTable extends React.Component {
 
 class IssueRow extends React.Component {
     render() {
+
         const issue = this.props.issue;
+        console.log("Render IssueRow: " + issue.id);        
         return (
             <tr>
                 <td>{issue.id}</td>
@@ -75,7 +109,7 @@ class IssueList extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Issue Tracker</h1>
+                <h1>Issue Tracker Assign</h1>
                 <IssueFilter />
                 <hr />
                 <IssueTable />
