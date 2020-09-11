@@ -114,20 +114,29 @@ class IssueList extends React.Component {
         this.setState({ issues: result.data.issueList });
     }
     
-    createIssue(issue) {
-        /* let newIssue = issue; */
-        let newIssue = Object.assign({}, issue);
-        newIssue.id = this.state.issues.length + 1;
-        newIssue.created = new Date();
-        const newIssueList = this.state.issues.slice();
-        newIssueList.push(newIssue);
-        this.setState({ issues: newIssueList });
+    async createIssue(issue) {
+        const query = `mutation {
+            issueAdd(issue:{
+                title: "${issue.title}",
+                owner: "${issue.owner}",
+                due: "${issue.due.toISOString()}",
+            }) {
+                id
+            }
+        }`;
+
+        const response = await fetch('/graphql', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ query })
+        });
+        this.loadData();
     }
 
     render() {
         return (
             <React.Fragment>
-                <h1>Issue Tracker ServerResponse</h1>
+                <h1>Issue Tracker Create to Server</h1>
                 <IssueFilter />
                 <hr />
                 <IssueTable issues={this.state.issues} />

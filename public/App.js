@@ -196,21 +196,47 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
     }()
   }, {
     key: "createIssue",
-    value: function createIssue(issue) {
-      /* let newIssue = issue; */
-      var newIssue = Object.assign({}, issue);
-      newIssue.id = this.state.issues.length + 1;
-      newIssue.created = new Date();
-      var newIssueList = this.state.issues.slice();
-      newIssueList.push(newIssue);
-      this.setState({
-        issues: newIssueList
-      });
-    }
+    value: function () {
+      var _createIssue = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(issue) {
+        var query, response;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                query = "mutation {\n            issueAdd(issue:{\n                title: \"".concat(issue.title, "\",\n                owner: \"").concat(issue.owner, "\",\n                due: \"").concat(issue.due.toISOString(), "\",\n            }) {\n                id\n            }\n        }");
+                _context2.next = 3;
+                return fetch('/graphql', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    query: query
+                  })
+                });
+
+              case 3:
+                response = _context2.sent;
+                this.loadData();
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function createIssue(_x) {
+        return _createIssue.apply(this, arguments);
+      }
+
+      return createIssue;
+    }()
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Issue Tracker ServerResponse"), /*#__PURE__*/React.createElement(IssueFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueTable, {
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Issue Tracker Create to Server"), /*#__PURE__*/React.createElement(IssueFilter, null), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueTable, {
         issues: this.state.issues
       }), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(IssueAdd, {
         createIssue: this.createIssue

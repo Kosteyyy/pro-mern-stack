@@ -29,7 +29,6 @@ const GraphQLDate = new GraphQLScalarType({
     return new Date(value);
   },
   parseLiteral(ast) {
-    console.log(ast.kind);
     return (ast.kind == Kind.STRING) ? new Date(ast.value) : undefined;
   },
 });
